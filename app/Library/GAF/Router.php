@@ -1,6 +1,5 @@
 <?php
-namespace GAF\Core;
-
+namespace GAF;
 /**
  * Class Router
  *
@@ -92,12 +91,14 @@ class Router
         $path = $this->uri;
         $is_index = (substr($path, -1) === '/' ? true : false);
         if ($is_index) {
-            $this->method = 'index';
+            $this->controller_method = 'index';
             return $this;
         }
         $method = ltrim(substr($path, strrpos($path, '/'), strlen($path)), '/');
         $method = explode('?', $method);
-        $this->controller_method = $this->access_method . ucfirst($method[0]);
+        $method = ucwords(str_replace('-', ' ', $method[0]));
+        $method = str_replace(' ', '', $method);
+        $this->controller_method = $this->access_method . ucfirst($method);
         return $this;
     }
 }
