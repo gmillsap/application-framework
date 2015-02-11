@@ -25,10 +25,10 @@ class ControllerBase {
     }
 
     public function before() {
-        $bootstrap = new Script('/app/js/bootstrap/3.3.2-dist2/bootstrap.min.js');
+        $bootstrap = new Script('/js/library/bootstrap/3.3.2-dist2/bootstrap.min.js');
         $bootstrap->setInHead();
         $this->addScript($bootstrap);
-        $this->addStyle(new Style('/app/css/bootstrap/3.3.2-dist2/bootstrap.min.css'));
+        $this->addStyle(new Style('/css/library/bootstrap/3.3.2-dist2/bootstrap.min.css'));
         return $this;
     }
 
