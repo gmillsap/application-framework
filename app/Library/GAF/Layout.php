@@ -1,7 +1,7 @@
 <?php
 namespace GAF;
-use Asset\Style;
-use Asset\Script;
+use \GAF\Asset\Style;
+use \GAF\Asset\Script;
 
 class Layout extends Template
 {
@@ -11,7 +11,7 @@ class Layout extends Template
 
     public function __construct() {
         parent::__construct();
-        $this->layout_dir = $_SERVER['DOCUMENT_ROOT'] . '/app/templates/layouts/';
+        $this->template_dir = $_SERVER['DOCUMENT_ROOT'] . '/app/templates/layouts/';
     }
 
     public function addStyle(Style $style, $index = null) {

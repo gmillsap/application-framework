@@ -91,7 +91,7 @@ class Router
         $path = $this->uri;
         $is_index = (substr($path, -1) === '/' ? true : false);
         if ($is_index) {
-            $this->controller_method = 'index';
+            $this->controller_method = $this->access_method . 'Index';
             return $this;
         }
         $method = ltrim(substr($path, strrpos($path, '/'), strlen($path)), '/');

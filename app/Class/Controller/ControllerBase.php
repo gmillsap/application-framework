@@ -1,8 +1,12 @@
 <?php
-namespace GAF;
+namespace Controller;
 
-use Input;
-use Template;
+use \GAF\Input;
+use \GAF\Template;
+use \GAF\Layout;
+use \GAF\Redirect;
+use \GAF\Asset\Script;
+use \GAF\Asset\Style;
 
 class ControllerBase {
     protected $inputs;
@@ -21,6 +25,10 @@ class ControllerBase {
     }
 
     public function before() {
+        $bootstrap = new Script('/app/js/bootstrap/3.3.2-dist2/bootstrap.min.js');
+        $bootstrap->setInHead();
+        $this->addScript($bootstrap);
+        $this->addStyle(new Style('/app/css/bootstrap/3.3.2-dist2/bootstrap.min.css'));
         return $this;
     }
 
@@ -58,16 +66,6 @@ class ControllerBase {
         return $this;
     }
 
-    public function renderPage() {
-        $this->includeAssets();
-        $this->layout->setLayoutFile($this->layout_file);
-        if ($this->template->getTemplateFile()) {
-            $this->template->generateContent();
-            $this->layout->setContent($this->template->getContent());
-        }
-        return $this->layout->render();
-    }
-
     public function addStyle(Style $style) {
         $this->styles[] = $style;
         return $this;
@@ -98,11 +96,25 @@ class ControllerBase {
         }
     }
 
+    public function beforeRender() {
+        return $this;
+    }
+
+    public function renderPage($output = true) {
+        $this->includeAssets();
+        $this->layout->setTemplateFile($this->layout_file);
+        if ($this->template->getTemplateFile()) {
+            $this->layout->setTemplateData(array('page_content' => $this->template->render(false)));
+        }
+        $this->beforeRender();
+        echo $this->layout->render($output);
+    }
+
     public static function redirect($code, $page) {
         Redirect::withCode($code);
         $controller = new self();
         $controller->template->setTemplateDir($_SERVER['DOCUMENT_ROOT'])->setTemplateFile($page);
-        $controller->render();
+        $controller->renderPage();
     }
 
     public function redirectWithCode($code) {
