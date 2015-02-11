@@ -98,18 +98,6 @@ class ControllerBase {
         }
     }
 
-    public function validateInputs() {
-        $this->setValidationRules();
-        foreach($this->validation_rules as $rule) {
-            $this->validator->addRule($rule);
-        }
-        return $this->validator->validate();
-    }
-
-    public function inputsAreValid() {
-        return $this->validator->isValid();
-    }
-
     public static function redirect($code, $page) {
         Redirect::withCode($code);
         $controller = new self();
